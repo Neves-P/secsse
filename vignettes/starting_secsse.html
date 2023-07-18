@@ -12,7 +12,11 @@
 
 <meta name="author" content="Thijs Janzen" />
 
+<<<<<<< HEAD
+<meta name="date" content="2023-07-11" />
+=======
 <meta name="date" content="2023-07-12" />
+>>>>>>> cf4405ee4b01435bb3bf9df70aac5a75b27a696f
 
 <title>Starting secsse</title>
 
@@ -340,7 +344,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Starting secsse</h1>
 <h4 class="author">Thijs Janzen</h4>
+<<<<<<< HEAD
+<h4 class="date">2023-07-11</h4>
+=======
 <h4 class="date">2023-07-12</h4>
+>>>>>>> cf4405ee4b01435bb3bf9df70aac5a75b27a696f
 
 
 
@@ -411,8 +419,9 @@ package:</p>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#and conversely,</span></span>
 <span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#mismat$data_not_tree</span></span></code></pre></div>
 <p>If you have taxa in your tree file that do not appear in your trait
-file, it is worth adding them with value ‘NA’ for trait state. You can
-visualise the tip states using the package diversitree:</p>
+file, it is worth adding them with value <code>NA</code> for trait
+state. You can visualise the tip states using the package
+diversitree:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">&quot;diversitree&quot;</span>)) {</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  for_plot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">trait =</span> traits<span class="sc">$</span>trait,</span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>                         <span class="at">row.names =</span> phylo_vignette<span class="sc">$</span>tip.label)</span>
@@ -634,6 +643,24 @@ missing, we could specify that as c(0.8, 1.0). Thus, note that the
 sampling fraction does not add up to 1 across traits, but within
 traits.</p>
 <p>And now we can perform maximum likelihood:</p>
+<<<<<<< HEAD
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>idparslist <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>idparslist[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> lambda_list</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>idparslist[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> mu_vec</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>idparslist[[<span class="dv">3</span>]] <span class="ot">&lt;-</span> q_matrix</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>answ <span class="ot">&lt;-</span> secsse<span class="sc">::</span><span class="fu">cla_secsse_ml</span>(<span class="at">phy =</span> phylo_vignette,</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>                              <span class="at">traits =</span> traits<span class="sc">$</span>trait,</span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>                              <span class="at">num_concealed_states =</span> <span class="dv">2</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>                              <span class="at">idparslist =</span> idparslist,</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>                              <span class="at">idparsopt =</span> idparsopt,</span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>                              <span class="at">initparsopt =</span> initparsopt,</span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a>                              <span class="at">idparsfix =</span> idparsfix,</span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a>                              <span class="at">parsfix =</span> initparsfix,</span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>                              <span class="at">sampling_fraction =</span> sampling_fraction,</span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a>                              <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a>                              <span class="at">num_threads =</span> <span class="dv">8</span>)</span></code></pre></div>
+=======
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>idparslist <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
 <span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>idparslist[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> lambda_list</span>
 <span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>idparslist[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> mu_vec</span>
@@ -650,6 +677,7 @@ traits.</p>
 <span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>                              <span class="at">sampling_fraction =</span> sampling_fraction,</span>
 <span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>                              <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a>                              <span class="at">num_threads =</span> <span class="dv">8</span>)</span></code></pre></div>
+>>>>>>> cf4405ee4b01435bb3bf9df70aac5a75b27a696f
 <pre><code>## Warning in check_ml_conditions(traits, idparslist, initparsopt, idparsopt, :
 ## Note: you set some transitions as impossible to happen.</code></pre>
 <p>We can now extract several pieces of information from the returned
@@ -658,6 +686,18 @@ answer:</p>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>ETD_par <span class="ot">&lt;-</span> secsse<span class="sc">::</span><span class="fu">extract_par_vals</span>(idparslist, answ<span class="sc">$</span>MLpars)</span>
 <span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>ML_ETD</span></code></pre></div>
 <pre><code>## [1] -96.32138</code></pre>
+<<<<<<< HEAD
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>ETD_par</span></code></pre></div>
+<pre><code>## [1] 4.429929e-01 8.810607e-01 5.201400e-07 7.764175e-07 7.770646e-02
+## [6] 1.570195e-09 1.410419e-01 6.549122e-02</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>spec_rates <span class="ot">&lt;-</span> ETD_par[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>ext_rates <span class="ot">&lt;-</span> ETD_par[<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>Q_Examined <span class="ot">&lt;-</span> ETD_par[<span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>Q_Concealed <span class="ot">&lt;-</span> ETD_par[<span class="dv">7</span><span class="sc">:</span><span class="dv">8</span>]</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a>spec_rates</span></code></pre></div>
+<pre><code>## [1] 0.4429929 0.8810607</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>ext_rates</span></code></pre></div>
+=======
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>ETD_par</span></code></pre></div>
 <pre><code>## [1] 4.429929e-01 8.810607e-01 5.201400e-07 7.764175e-07 7.770646e-02
 ## [6] 1.570195e-09 1.410419e-01 6.549122e-02</code></pre>
@@ -668,10 +708,15 @@ answer:</p>
 <span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>spec_rates</span></code></pre></div>
 <pre><code>## [1] 0.4429929 0.8810607</code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>ext_rates</span></code></pre></div>
+>>>>>>> cf4405ee4b01435bb3bf9df70aac5a75b27a696f
 <pre><code>## [1] 5.201400e-07 7.764175e-07</code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>Q_Examined</span></code></pre></div>
 <pre><code>## [1] 7.770646e-02 1.570195e-09</code></pre>
+<<<<<<< HEAD
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>Q_Concealed</span></code></pre></div>
+=======
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>Q_Concealed</span></code></pre></div>
+>>>>>>> cf4405ee4b01435bb3bf9df70aac5a75b27a696f
 <pre><code>## [1] 0.14104187 0.06549122</code></pre>
 <p>The function <code>extract_par_vals()</code> goes over the list
 <code>answ$MLpars</code> and places the found parameter values back in
@@ -772,6 +817,50 @@ the same transitions are possible:</p>
 <h4>Maximum Likelihood</h4>
 <p>Now that we have specified our matrices, we can use the same code we
 used for the ETD model to perform our maximum likelihood:</p>
+<<<<<<< HEAD
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>idparsopt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span> <span class="co"># our maximum rate parameter was 8</span></span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>idparsfix <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>) <span class="co"># we want to keep all zeros at zero</span></span>
+<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a>initparsopt <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fl">0.1</span>, <span class="dv">8</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" tabindex="-1"></a>initparsfix <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.0</span>) <span class="co"># all zeros remain at zero.</span></span>
+<span id="cb40-5"><a href="#cb40-5" tabindex="-1"></a>sampling_fraction <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb40-6"><a href="#cb40-6" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" tabindex="-1"></a>idparslist <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb40-8"><a href="#cb40-8" tabindex="-1"></a>idparslist[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> lambda_list</span>
+<span id="cb40-9"><a href="#cb40-9" tabindex="-1"></a>idparslist[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> mu_vec</span>
+<span id="cb40-10"><a href="#cb40-10" tabindex="-1"></a>idparslist[[<span class="dv">3</span>]] <span class="ot">&lt;-</span> q_matrix</span>
+<span id="cb40-11"><a href="#cb40-11" tabindex="-1"></a></span>
+<span id="cb40-12"><a href="#cb40-12" tabindex="-1"></a>answ <span class="ot">&lt;-</span> secsse<span class="sc">::</span><span class="fu">cla_secsse_ml</span>(<span class="at">phy =</span> phylo_vignette,</span>
+<span id="cb40-13"><a href="#cb40-13" tabindex="-1"></a>                              <span class="at">traits =</span> traits<span class="sc">$</span>trait,</span>
+<span id="cb40-14"><a href="#cb40-14" tabindex="-1"></a>                              <span class="at">num_concealed_states =</span> <span class="dv">2</span>,</span>
+<span id="cb40-15"><a href="#cb40-15" tabindex="-1"></a>                              <span class="at">idparslist =</span> idparslist,</span>
+<span id="cb40-16"><a href="#cb40-16" tabindex="-1"></a>                              <span class="at">idparsopt =</span> idparsopt,</span>
+<span id="cb40-17"><a href="#cb40-17" tabindex="-1"></a>                              <span class="at">initparsopt =</span> initparsopt,</span>
+<span id="cb40-18"><a href="#cb40-18" tabindex="-1"></a>                              <span class="at">idparsfix =</span> idparsfix,</span>
+<span id="cb40-19"><a href="#cb40-19" tabindex="-1"></a>                              <span class="at">parsfix =</span> initparsfix,</span>
+<span id="cb40-20"><a href="#cb40-20" tabindex="-1"></a>                              <span class="at">sampling_fraction =</span> sampling_fraction,</span>
+<span id="cb40-21"><a href="#cb40-21" tabindex="-1"></a>                              <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb40-22"><a href="#cb40-22" tabindex="-1"></a>                              <span class="at">num_threads =</span> <span class="dv">8</span>)</span></code></pre></div>
+<pre><code>## Warning in check_ml_conditions(traits, idparslist, initparsopt, idparsopt, :
+## Note: you set some transitions as impossible to happen.</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a>ML_CTD <span class="ot">&lt;-</span> answ<span class="sc">$</span>ML</span>
+<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a>CTD_par <span class="ot">&lt;-</span> secsse<span class="sc">::</span><span class="fu">extract_par_vals</span>(idparslist, answ<span class="sc">$</span>MLpars)</span>
+<span id="cb42-3"><a href="#cb42-3" tabindex="-1"></a>ML_CTD</span></code></pre></div>
+<pre><code>## [1] -98.41269</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>CTD_par</span></code></pre></div>
+<pre><code>## [1] 1.967792e+00 2.939082e-01 3.637021e-04 4.716578e-05 7.756585e-02
+## [6] 6.941423e-07 1.319752e+01 3.715673e+00</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a>spec_rates <span class="ot">&lt;-</span> CTD_par[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a>ext_rates <span class="ot">&lt;-</span> CTD_par[<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb46-3"><a href="#cb46-3" tabindex="-1"></a>Q_Examined <span class="ot">&lt;-</span> CTD_par[<span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<span id="cb46-4"><a href="#cb46-4" tabindex="-1"></a>Q_Concealed <span class="ot">&lt;-</span> CTD_par[<span class="dv">7</span><span class="sc">:</span><span class="dv">8</span>]</span>
+<span id="cb46-5"><a href="#cb46-5" tabindex="-1"></a>spec_rates</span></code></pre></div>
+<pre><code>## [1] 1.9677916 0.2939082</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>ext_rates</span></code></pre></div>
+<pre><code>## [1] 3.637021e-04 4.716578e-05</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>Q_Examined</span></code></pre></div>
+<pre><code>## [1] 7.756585e-02 6.941423e-07</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>Q_Concealed</span></code></pre></div>
+=======
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>idparsopt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span> <span class="co"># our maximum rate parameter was 8</span></span>
 <span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>idparsfix <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>) <span class="co"># we want to keep all zeros at zero</span></span>
 <span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a>initparsopt <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fl">0.1</span>, <span class="dv">8</span>)</span>
@@ -814,6 +903,7 @@ used for the ETD model to perform our maximum likelihood:</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a>Q_Examined</span></code></pre></div>
 <pre><code>## [1] 7.756585e-02 6.941423e-07</code></pre>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>Q_Concealed</span></code></pre></div>
+>>>>>>> cf4405ee4b01435bb3bf9df70aac5a75b27a696f
 <pre><code>## [1] 13.197515  3.715673</code></pre>
 <p>Here we now find that state A has a very low speciation rate, in
 contrast to a much higher speciation rate for state B (remember that
@@ -907,6 +997,30 @@ all rates in the transition matrix are the same).</p>
 </div>
 <div id="maximum-likelihood-2" class="section level4">
 <h4>Maximum Likelihood</h4>
+<<<<<<< HEAD
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>idparsopt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span> <span class="co"># our maximum rate parameter was 6</span></span>
+<span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a>idparsfix <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>) <span class="co"># we want to keep all zeros at zero</span></span>
+<span id="cb60-3"><a href="#cb60-3" tabindex="-1"></a>initparsopt <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fl">0.1</span>, <span class="dv">6</span>)</span>
+<span id="cb60-4"><a href="#cb60-4" tabindex="-1"></a>initparsfix <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.0</span>) <span class="co"># all zeros remain at zero.</span></span>
+<span id="cb60-5"><a href="#cb60-5" tabindex="-1"></a>sampling_fraction <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb60-6"><a href="#cb60-6" tabindex="-1"></a></span>
+<span id="cb60-7"><a href="#cb60-7" tabindex="-1"></a>idparslist <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb60-8"><a href="#cb60-8" tabindex="-1"></a>idparslist[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> lambda_list</span>
+<span id="cb60-9"><a href="#cb60-9" tabindex="-1"></a>idparslist[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> mu_vec</span>
+<span id="cb60-10"><a href="#cb60-10" tabindex="-1"></a>idparslist[[<span class="dv">3</span>]] <span class="ot">&lt;-</span> q_matrix</span>
+<span id="cb60-11"><a href="#cb60-11" tabindex="-1"></a></span>
+<span id="cb60-12"><a href="#cb60-12" tabindex="-1"></a>answ <span class="ot">&lt;-</span> secsse<span class="sc">::</span><span class="fu">cla_secsse_ml</span>(<span class="at">phy =</span> phylo_vignette,</span>
+<span id="cb60-13"><a href="#cb60-13" tabindex="-1"></a>                              <span class="at">traits =</span> traits<span class="sc">$</span>trait,</span>
+<span id="cb60-14"><a href="#cb60-14" tabindex="-1"></a>                              <span class="at">num_concealed_states =</span> <span class="dv">2</span>,</span>
+<span id="cb60-15"><a href="#cb60-15" tabindex="-1"></a>                              <span class="at">idparslist =</span> idparslist,</span>
+<span id="cb60-16"><a href="#cb60-16" tabindex="-1"></a>                              <span class="at">idparsopt =</span> idparsopt,</span>
+<span id="cb60-17"><a href="#cb60-17" tabindex="-1"></a>                              <span class="at">initparsopt =</span> initparsopt,</span>
+<span id="cb60-18"><a href="#cb60-18" tabindex="-1"></a>                              <span class="at">idparsfix =</span> idparsfix,</span>
+<span id="cb60-19"><a href="#cb60-19" tabindex="-1"></a>                              <span class="at">parsfix =</span> initparsfix,</span>
+<span id="cb60-20"><a href="#cb60-20" tabindex="-1"></a>                              <span class="at">sampling_fraction =</span> sampling_fraction,</span>
+<span id="cb60-21"><a href="#cb60-21" tabindex="-1"></a>                              <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb60-22"><a href="#cb60-22" tabindex="-1"></a>                              <span class="at">num_threads =</span> <span class="dv">8</span>)</span></code></pre></div>
+=======
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>idparsopt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span> <span class="co"># our maximum rate parameter was 6</span></span>
 <span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>idparsfix <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>) <span class="co"># we want to keep all zeros at zero</span></span>
 <span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>initparsopt <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fl">0.1</span>, <span class="dv">6</span>)</span>
@@ -929,6 +1043,7 @@ all rates in the transition matrix are the same).</p>
 <span id="cb59-20"><a href="#cb59-20" tabindex="-1"></a>                              <span class="at">sampling_fraction =</span> sampling_fraction,</span>
 <span id="cb59-21"><a href="#cb59-21" tabindex="-1"></a>                              <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb59-22"><a href="#cb59-22" tabindex="-1"></a>                              <span class="at">num_threads =</span> <span class="dv">8</span>)</span></code></pre></div>
+>>>>>>> cf4405ee4b01435bb3bf9df70aac5a75b27a696f
 <pre><code>## Warning in check_ml_conditions(traits, idparslist, initparsopt, idparsopt, :
 ## Note: you set some transitions as impossible to happen.</code></pre>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a>ML_CR <span class="ot">&lt;-</span> answ<span class="sc">$</span>ML</span>
@@ -979,7 +1094,13 @@ ETD model, which we have correctly recovered!</p>
 feel free to create an issue at the package’s GitHub repository <a href="https://github.com/rsetienne/secsse/issues" class="uri">https://github.com/rsetienne/secsse/issues</a> or e-mail the
 authors for help with this R package. Additionally, bug reports and
 feature requests are welcome by the same means.</p>
+<<<<<<< HEAD
 <p>======= ## References</p>
+=======
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+>>>>>>> cf4405ee4b01435bb3bf9df70aac5a75b27a696f
 <p>Beaulieu, J. M., O’Meara, B. C., &amp; Donoghue, M. J. (2013).
 Identifying hidden rate changes in the evolution of a binary
 morphological character: the evolution of plant habit in campanulid

@@ -78,7 +78,7 @@ mismat <- name.check(phylo_vignette, traits)
 ```
 
 If you have taxa in your tree file that do not appear in your trait file, it is
-worth adding them with value 'NA' for trait state. 
+worth adding them with value `NA` for trait state. 
 You can visualise the tip states using the package diversitree:
 
 ```{r plot_tree}
@@ -569,7 +569,6 @@ https://github.com/rsetienne/secsse/issues or e-mail the authors for help with
 this R package. Additionally, bug reports and feature requests are welcome by
 the same means.
 
-=======
 ## References 
 
 Beaulieu, J. M., O'Meara, B. C., & Donoghue, M. J. (2013). Identifying hidden
