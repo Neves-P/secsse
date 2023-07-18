@@ -43,7 +43,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/complete_tree.html">Using secsse with complete phylogenies (with extinction)</a>
     <a class="dropdown-item" href="../articles/plotting_states.html">Plotting probabilities</a>
-    <a class="dropdown-item" href="../articles/secsse_versions.html">secsse versions</a>
+    <a class="dropdown-item" href="../articles/secsse_versions.html">Secsse versions</a>
     <a class="dropdown-item" href="../articles/sim_with_secsse.html">Simulating with secsse</a>
     <a class="dropdown-item" href="../articles/starting_secsse.html">Starting secsse</a>
   </div>
@@ -106,8 +106,9 @@ these with actual values.</p>
 <h4 id="creating-parameter-structure">Creating parameter structure<a class="anchor" aria-label="anchor" href="#creating-parameter-structure"></a>
 </h4>
 <p>For a more detailed description of how the Lambda List, Mu vector and
-Q matrix work, we refer to the vignette <code>starting_secsse</code>. We
-will here first simulate using the CR model:</p>
+Q matrix work, we refer to the vignette
+<code><a href="../articles/starting_secsse.html">vignette("starting_secsse", package = "secsse")</a></code>. We will
+here first simulate using the CR model:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spec_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">spec_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">spec_matrix</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
@@ -130,7 +131,7 @@ will here first simulate using the CR model:</p>
 <span>                                    diff.conceal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>In order for secsse to be able to use these to simulate a tree, we
 need to provide actual starting parameters. secsse has a helping
-function for that as well!</p>
+function (<code>fil_in()</code>) for that as well!</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">speciation_rate</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
 <span><span class="va">extinction_rate</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
@@ -141,8 +142,8 @@ function for that as well!</p>
 <span><span class="va">sim_lambda_list</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/fill_in.html">fill_in</a></span><span class="op">(</span><span class="va">lambda_list</span>, <span class="va">used_params</span><span class="op">)</span></span>
 <span><span class="va">sim_mu_vector</span>   <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/fill_in.html">fill_in</a></span><span class="op">(</span><span class="va">mu_vector</span>, <span class="va">used_params</span><span class="op">)</span></span>
 <span><span class="va">sim_q_matrix</span>    <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/fill_in.html">fill_in</a></span><span class="op">(</span><span class="va">q_matrix</span>, <span class="va">used_params</span><span class="op">)</span></span></code></pre></div>
-<p>The function <code>fill_in</code> will go over the different objects
-and fill in the appropriate parameter value from the
+<p>The function <code><a href="../reference/fill_in.html">fill_in()</a></code> will go over the different
+objects and fill in the appropriate parameter value from the
 <code>used_params</code> vector, e.g. when it finds a <code>1</code> as
 rate indicator, it enters the value at position
 <code>used_params[1]</code>, when it encounters a <code>2</code> as rate
@@ -176,7 +177,7 @@ etc.</p>
 <div class="section level3">
 <h3 id="conditioning">Conditioning<a class="anchor" aria-label="anchor" href="#conditioning"></a>
 </h3>
-<p>Notice that <code>secsse::sim_tree</code> can simulate a tree
+<p>Notice that <code><a href="../reference/secsse_sim.html">secsse_sim()</a></code> can simulate a tree
 conditioning on different tip-states: either it uses the conditioning
 <code>obs_states</code>, in which case secsse will keep simulating until
 it simulates a tree that has all observed states. This is usually
@@ -194,10 +195,11 @@ of observed and concealed states are present at the tips:</p>
 <span>                               conditioning <span class="op">=</span> <span class="st">"obs_states"</span>,</span>
 <span>                               seed <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="va">sim_tree</span><span class="op">$</span><span class="va">obs_traits</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] "1" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0"</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] "0" "0" "0" "1" "0" "0" "0" "0" "1" "0" "1" "1" "0" "0" "0" "0"</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_tree</span><span class="op">$</span><span class="va">true_traits</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] "1A" "0A" "0B" "0B" "0A" "0A" "0A" "0A" "0B" "0A" "0A" "0A"</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] "0A" "0A" "0A" "1A" "0A" "0A" "0A" "0A" "1A" "0A" "1A" "1A" "0A" "0A" "0A"</span></span>
+<span><span class="co">## [16] "0A"</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_tree</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/secsse_sim.html">secsse_sim</a></span><span class="op">(</span>lambdas <span class="op">=</span> <span class="va">sim_lambda_list</span>,</span>
 <span>                               mus <span class="op">=</span> <span class="va">sim_mu_vector</span>,</span>
@@ -207,14 +209,11 @@ of observed and concealed states are present at the tips:</p>
 <span>                               conditioning <span class="op">=</span> <span class="st">"true_states"</span>,</span>
 <span>                               seed <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="va">sim_tree</span><span class="op">$</span><span class="va">obs_traits</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] "0" "1" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0" "1" "0" "0" "0" "0"</span></span>
-<span><span class="co">## [20] "0" "0" "0" "0" "0" "0" "0" "0" "1" "0" "0" "0" "0" "0" "0" "0" "0" "1" "0"</span></span>
-<span><span class="co">## [39] "0" "0" "0" "0" "0"</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] "1" "1" "1" "1" "1" "1" "0" "0" "0" "0" "0" "0" "0" "0" "0" "0" "1" "1" "1"</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_tree</span><span class="op">$</span><span class="va">true_traits</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] "0B" "1A" "0A" "0B" "0A" "0A" "0A" "0A" "0A" "0A" "0A" "0B" "0A" "0A" "1B"</span></span>
-<span><span class="co">## [16] "0A" "0B" "0B" "0B" "0B" "0B" "0B" "0A" "0B" "0B" "0B" "0B" "1B" "0B" "0A"</span></span>
-<span><span class="co">## [31] "0B" "0B" "0A" "0B" "0B" "0A" "1A" "0A" "0B" "0B" "0B" "0B" "0B"</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] "1B" "1B" "1B" "1B" "1A" "1B" "0B" "0B" "0B" "0B" "0B" "0B" "0B" "0A" "0A"</span></span>
+<span><span class="co">## [16] "0A" "1B" "1B" "1B"</span></span></code></pre>
 <p>Here, we have only explored a two-state system and the differences
 may not be very large, but for large numbers of states, such
 conditioning might yield very different trees.</p>

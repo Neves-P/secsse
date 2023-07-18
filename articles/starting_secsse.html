@@ -43,7 +43,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/complete_tree.html">Using secsse with complete phylogenies (with extinction)</a>
     <a class="dropdown-item" href="../articles/plotting_states.html">Plotting probabilities</a>
-    <a class="dropdown-item" href="../articles/secsse_versions.html">secsse versions</a>
+    <a class="dropdown-item" href="../articles/secsse_versions.html">Secsse versions</a>
     <a class="dropdown-item" href="../articles/sim_with_secsse.html">Simulating with secsse</a>
     <a class="dropdown-item" href="../articles/starting_secsse.html">Starting secsse</a>
   </div>
@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Thijs
 Janzen</h4>
             
-            <h4 data-toc-skip class="date">2023-07-12</h4>
+            <h4 data-toc-skip class="date">2023-07-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rsetienne/secsse/blob/HEAD/vignettes/starting_secsse.Rmd" class="external-link"><code>vignettes/starting_secsse.Rmd</code></a></small>
       <div class="d-none name"><code>starting_secsse.Rmd</code></div>
@@ -161,8 +161,9 @@ package:</p>
 <span><span class="co">#and conversely,</span></span>
 <span><span class="co">#mismat$data_not_tree</span></span></code></pre></div>
 <p>If you have taxa in your tree file that do not appear in your trait
-file, it is worth adding them with value ‘NA’ for trait state. You can
-visualise the tip states using the package diversitree:</p>
+file, it is worth adding them with value <code>NA</code> for trait
+state. You can visualise the tip states using the package
+diversitree:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"diversitree"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">for_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>trait <span class="op">=</span> <span class="va">traits</span><span class="op">$</span><span class="va">trait</span>,</span>
@@ -783,7 +784,10 @@ ETD model, which we have correctly recovered!</p>
 feel free to create an issue at the package’s GitHub repository <a href="https://github.com/rsetienne/secsse/issues" class="external-link uri">https://github.com/rsetienne/secsse/issues</a> or e-mail the
 authors for help with this R package. Additionally, bug reports and
 feature requests are welcome by the same means.</p>
-<p>======= ## References</p>
+</div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <p>Beaulieu, J. M., O’Meara, B. C., &amp; Donoghue, M. J. (2013).
 Identifying hidden rate changes in the evolution of a binary
 morphological character: the evolution of plant habit in campanulid

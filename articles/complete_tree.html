@@ -43,7 +43,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/complete_tree.html">Using secsse with complete phylogenies (with extinction)</a>
     <a class="dropdown-item" href="../articles/plotting_states.html">Plotting probabilities</a>
-    <a class="dropdown-item" href="../articles/secsse_versions.html">secsse versions</a>
+    <a class="dropdown-item" href="../articles/secsse_versions.html">Secsse versions</a>
     <a class="dropdown-item" href="../articles/sim_with_secsse.html">Simulating with secsse</a>
     <a class="dropdown-item" href="../articles/starting_secsse.html">Starting secsse</a>
   </div>
@@ -76,10 +76,8 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Using secsse with complete phylogenies (with extinction)</h1>
-                        <h4 data-toc-skip class="author">Pedro Santos
-Neves</h4>
             
-            <h4 data-toc-skip class="date">2023-07-12</h4>
+            <h4 data-toc-skip class="date">2023-07-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rsetienne/secsse/blob/HEAD/vignettes/complete_tree.Rmd" class="external-link"><code>vignettes/complete_tree.Rmd</code></a></small>
       <div class="d-none name"><code>complete_tree.Rmd</code></div>
@@ -95,7 +93,7 @@ phylogenies, which, for most groups, contain only information on extant
 species. However, when data on extinct species is available, usually
 through the presence of fossil data, we can use complete trees. Thus, we
 can leverage the data from extinct lineages for maximum-likelihood
-estimation.</p>
+estimation with secsse.</p>
 <p>Note that here “complete tree” should not be taken as a complete
 sampling fraction, that is, all known species being present in the
 phylogeny and there being no missing data, but rather the assumption
@@ -109,73 +107,75 @@ on extinct lineages.</p>
 </h2>
 <p>Like all ML analyses with secsse, we first need a few things to start
 with, starting with a dated phylogeny. For the purpose of this vignette,
-we are going to use the DDD package to simulate a complete tree, and the
-ape package to add mock traits.</p>
+we are going to simulate phylogenies with <code><a href="../reference/secsse_sim.html">secsse_sim()</a></code>. We
+will simulate a reconstructed and a complete version of the same tree
+under the CR model.</p>
+<p>In order to simulate the trees, we need to specify the model and set
+starting parameters. Here we simulate a similar constant rate (CR)
+example to that of the <em>Simulating with secsse</em> vignette. For
+more details on this model and full details of the functionality of
+<code><a href="../reference/secsse_sim.html">secsse_sim()</a></code>, see
+<code><a href="../articles/sim_with_secsse.html">vignette("sim_with_secsse", package = "secsse")</a></code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rsetienne/secsse" class="external-link">secsse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">DDD</span><span class="op">)</span></span>
 <span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">41</span><span class="op">)</span></span>
-<span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">DDD</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DDD/man/dd_sim.html" class="external-link">dd_sim</a></span><span class="op">(</span>pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.1</span>, <span class="fl">40</span><span class="op">)</span>, age <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
-<span><span class="va">phy</span> <span class="op">&lt;-</span> <span class="va">out</span><span class="op">$</span><span class="va">tas</span></span>
-<span></span>
-<span><span class="va">spec_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/summary.phylo.html" class="external-link">Ntip</a></span><span class="op">(</span><span class="va">phy</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"diversitree"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">for_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>trait <span class="op">=</span> <span class="va">spec_traits</span>,</span>
-<span>                         row.names <span class="op">=</span> <span class="va">phy</span><span class="op">$</span><span class="va">tip.label</span><span class="op">)</span></span>
-<span>  <span class="fu">diversitree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/diversitree/man/trait.plot.html" class="external-link">trait.plot</a></span><span class="op">(</span><span class="va">phy</span>, dat <span class="op">=</span> <span class="va">for_plot</span>,</span>
-<span>                          cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"trait"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                          type <span class="op">=</span> <span class="st">"p"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co">#&gt; Loading required namespace: diversitree</span></span></code></pre></div>
-<p><img src="complete_tree_files/figure-html/sim_plot_tree-1.png" width="700"></p>
-<p>Now that we have our phylogeny, let’s specify our model. We are going
-to specify the same ETD model as in the <em>Starting secsse</em>
-vignette. For the full details, consult it with
-<code>vignette("Starting secsse", package = "secsse")</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">spec_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">spec_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">spec_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">spec_matrix</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">spec_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">spec_matrix</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">spec_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">spec_matrix</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">lambda_list</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/create_lambda_list.html">create_lambda_list</a></span><span class="op">(</span>state_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>                                          num_concealed_states <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>                                          transition_matrix <span class="op">=</span> <span class="va">spec_matrix</span>,</span>
-<span>                                          model <span class="op">=</span> <span class="st">"ETD"</span><span class="op">)</span></span>
+<span>                                          model <span class="op">=</span> <span class="st">"CR"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">mu_vec</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/create_mu_vector.html">create_mu_vector</a></span><span class="op">(</span>state_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>                                   num_concealed_states <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>                                   model <span class="op">=</span> <span class="st">"ETD"</span>,</span>
-<span>                                   lambda_list <span class="op">=</span> <span class="va">lambda_list</span><span class="op">)</span></span>
+<span><span class="va">mu_vector</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/create_mu_vector.html">create_mu_vector</a></span><span class="op">(</span>state_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>                                      num_concealed_states <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                                      model <span class="op">=</span> <span class="st">"CR"</span>,</span>
+<span>                                      lambda_list <span class="op">=</span> <span class="va">lambda_list</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">shift_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">shift_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">shift_matrix</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">shift_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">shift_matrix</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">shift_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">shift_matrix</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">shift_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">shift_matrix</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">q_matrix</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/create_q_matrix.html">create_q_matrix</a></span><span class="op">(</span>state_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>                                    num_concealed_states <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>                                    shift_matrix <span class="op">=</span> <span class="va">shift_matrix</span>,</span>
-<span>                                    diff.conceal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">q_matrix</span></span>
-<span><span class="co">#&gt;    0A 1A 0B 1B</span></span>
-<span><span class="co">#&gt; 0A NA  5  7  0</span></span>
-<span><span class="co">#&gt; 1A  6 NA  0  7</span></span>
-<span><span class="co">#&gt; 0B  8  0 NA  5</span></span>
-<span><span class="co">#&gt; 1B  0  8  6 NA</span></span>
+<span>                                    diff.conceal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">idparsopt</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span> <span class="co"># our maximum rate parameter was 8</span></span>
-<span><span class="va">idparsfix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span> <span class="co"># we want to keep all zeros at zero</span></span>
-<span><span class="va">initparsopt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">8</span><span class="op">)</span></span>
-<span><span class="va">initparsfix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="co"># all zeros remain at zero.</span></span>
-<span><span class="va">sampling_fraction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co"># Set-up starting parameters</span></span>
+<span><span class="va">speciation_rate</span> <span class="op">&lt;-</span> <span class="fl">0.8</span></span>
+<span><span class="va">extinction_rate</span> <span class="op">&lt;-</span> <span class="fl">0.2</span></span>
+<span><span class="va">q_01</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span><span class="va">q_10</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span><span class="va">used_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">speciation_rate</span>, <span class="va">extinction_rate</span>, <span class="va">q_01</span>, <span class="va">q_10</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">idparslist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">idparslist</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">lambda_list</span></span>
-<span><span class="va">idparslist</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">mu_vec</span></span>
-<span><span class="va">idparslist</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">q_matrix</span></span></code></pre></div>
+<span><span class="va">sim_lambda_list</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/fill_in.html">fill_in</a></span><span class="op">(</span><span class="va">lambda_list</span>, <span class="va">used_params</span><span class="op">)</span></span>
+<span><span class="va">sim_mu_vector</span>   <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/fill_in.html">fill_in</a></span><span class="op">(</span><span class="va">mu_vector</span>, <span class="va">used_params</span><span class="op">)</span></span>
+<span><span class="va">sim_q_matrix</span>    <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/fill_in.html">fill_in</a></span><span class="op">(</span><span class="va">q_matrix</span>, <span class="va">used_params</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Simulate and plot the tree</span></span>
+<span></span>
+<span><span class="va">sim_tree_complete</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/secsse_sim.html">secsse_sim</a></span><span class="op">(</span>lambdas <span class="op">=</span> <span class="va">sim_lambda_list</span>,</span>
+<span>                                        mus <span class="op">=</span> <span class="va">sim_mu_vector</span>,</span>
+<span>                                        qs <span class="op">=</span> <span class="va">sim_q_matrix</span>,</span>
+<span>                                        crown_age <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>                                        num_concealed_states <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                                        seed <span class="op">=</span> <span class="fl">40</span>,</span>
+<span>                                        drop_extinct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"diversitree"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">traits_for_plot_complete</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    trait <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">sim_tree_complete</span><span class="op">$</span><span class="va">obs_traits</span><span class="op">)</span>,</span>
+<span>    row.names <span class="op">=</span> <span class="va">sim_tree_complete</span><span class="op">$</span><span class="va">phy</span><span class="op">$</span><span class="va">tip.label</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="fu">diversitree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/diversitree/man/trait.plot.html" class="external-link">trait.plot</a></span><span class="op">(</span>tree <span class="op">=</span> <span class="va">sim_tree_complete</span><span class="op">$</span><span class="va">phy</span>,</span>
+<span>                          dat <span class="op">=</span> <span class="va">traits_for_plot_complete</span>,</span>
+<span>                          cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"trait"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                          type <span class="op">=</span> <span class="st">"p"</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_tree_complete</span><span class="op">$</span><span class="va">phy</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; Loading required namespace: diversitree</span></span></code></pre></div>
+<p><img src="complete_tree_files/figure-html/sim_plot_tree-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="fitting-the-model">Fitting the model<a class="anchor" aria-label="anchor" href="#fitting-the-model"></a>
@@ -185,69 +185,134 @@ in the same way as we would for one with extant species. However, this
 time we make sure to set the <code>is_complete_tree</code> argument to
 <code>TRUE</code> (defaults to <code>FALSE</code> if omitted). This
 enables secsse to use the information present in extinct lineages.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">complete_tree_ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/secsse_ml.html">secsse_ml</a></span><span class="op">(</span>phy <span class="op">=</span> <span class="va">phy</span>,</span>
-<span>                              traits <span class="op">=</span> <span class="va">spec_traits</span>,</span>
-<span>                              num_concealed_states <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>                              idparslist <span class="op">=</span> <span class="va">idparslist</span>,</span>
-<span>                              idparsopt <span class="op">=</span> <span class="va">idparsopt</span>,</span>
-<span>                              initparsopt <span class="op">=</span> <span class="va">initparsopt</span>,</span>
-<span>                              idparsfix <span class="op">=</span> <span class="va">idparsfix</span>,</span>
-<span>                              parsfix <span class="op">=</span> <span class="va">initparsfix</span>,</span>
-<span>                              sampling_fraction <span class="op">=</span> <span class="va">sampling_fraction</span>,</span>
-<span>                              verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                              num_threads <span class="op">=</span> <span class="fl">8</span>,</span>
-<span>                              is_complete_tree <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">idparsopt</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span> <span class="co"># our maximum rate parameter was 4 -&gt; We are keeping</span></span>
+<span><span class="co"># concealed and examined traits the same for the MLE.</span></span>
+<span><span class="va">idparsfix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span> <span class="co"># we want to keep all zeros at zero</span></span>
+<span><span class="va">initparsopt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">initparsfix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="co"># all zeros remain at zero.</span></span>
+<span><span class="va">sampling_fraction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">idparslist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">idparslist</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">lambda_list</span></span>
+<span><span class="va">idparslist</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">mu_vector</span></span>
+<span><span class="va">idparslist</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">q_matrix</span></span>
+<span></span>
+<span><span class="va">complete_tree_ml_CR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/secsse_ml.html">secsse_ml</a></span><span class="op">(</span>phy <span class="op">=</span> <span class="va">sim_tree_complete</span><span class="op">$</span><span class="va">phy</span>,</span>
+<span>                                 traits <span class="op">=</span> <span class="va">sim_tree_complete</span><span class="op">$</span><span class="va">obs_traits</span>,</span>
+<span>                                 num_concealed_states <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                                 idparslist <span class="op">=</span> <span class="va">idparslist</span>,</span>
+<span>                                 idparsopt <span class="op">=</span> <span class="va">idparsopt</span>,</span>
+<span>                                 initparsopt <span class="op">=</span> <span class="va">initparsopt</span>,</span>
+<span>                                 idparsfix <span class="op">=</span> <span class="va">idparsfix</span>,</span>
+<span>                                 parsfix <span class="op">=</span> <span class="va">initparsfix</span>,</span>
+<span>                                 sampling_fraction <span class="op">=</span> <span class="va">sampling_fraction</span>,</span>
+<span>                                 verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                 num_threads <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in check_ml_conditions(traits, idparslist, initparsopt, idparsopt, :</span></span>
 <span><span class="co">#&gt; Note: you set some transitions as impossible to happen.</span></span></code></pre></div>
 <p>Now we can see what our results look like.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">complete_tree_ml_etd</span> <span class="op">&lt;-</span> <span class="va">complete_tree_ml</span><span class="op">$</span><span class="va">ML</span></span>
-<span><span class="va">ETD_par_complete</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/extract_par_vals.html">extract_par_vals</a></span><span class="op">(</span><span class="va">idparslist</span>, <span class="va">complete_tree_ml</span><span class="op">$</span><span class="va">MLpars</span><span class="op">)</span></span>
-<span><span class="va">complete_tree_ml_etd</span></span>
-<span><span class="co">#&gt; [1] -279.2373</span></span>
-<span><span class="va">ETD_par_complete</span></span>
-<span><span class="co">#&gt; [1] 5.389534e-04 4.006497e-01 1.161922e-01 7.980695e-02 7.292250e+01</span></span>
-<span><span class="co">#&gt; [6] 6.858051e+01 2.743970e-01 6.471424e-01</span></span>
-<span><span class="va">spec_rates_complete</span> <span class="op">&lt;-</span> <span class="va">ETD_par_complete</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
-<span><span class="va">ext_rates_complete</span> <span class="op">&lt;-</span> <span class="va">ETD_par_complete</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
-<span><span class="va">Q_Examined_complete</span> <span class="op">&lt;-</span> <span class="va">ETD_par_complete</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span>
-<span><span class="va">Q_Concealed_complete</span> <span class="op">&lt;-</span> <span class="va">ETD_par_complete</span><span class="op">[</span><span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">CR_par_complete</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/extract_par_vals.html">extract_par_vals</a></span><span class="op">(</span><span class="va">idparslist</span>, <span class="va">complete_tree_ml_CR</span><span class="op">$</span><span class="va">MLpars</span><span class="op">)</span></span>
+<span><span class="va">complete_tree_ml_CR</span></span>
+<span><span class="co">#&gt; $MLpars</span></span>
+<span><span class="co">#&gt; $MLpars[[1]]</span></span>
+<span><span class="co">#&gt; $MLpars[[1]][[1]]</span></span>
+<span><span class="co">#&gt;           0A 1A 0B 1B</span></span>
+<span><span class="co">#&gt; 0A 0.8921168  0  0  0</span></span>
+<span><span class="co">#&gt; 1A 0.0000000  0  0  0</span></span>
+<span><span class="co">#&gt; 0B 0.0000000  0  0  0</span></span>
+<span><span class="co">#&gt; 1B 0.0000000  0  0  0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $MLpars[[1]][[2]]</span></span>
+<span><span class="co">#&gt;    0A        1A 0B 1B</span></span>
+<span><span class="co">#&gt; 0A  0 0.0000000  0  0</span></span>
+<span><span class="co">#&gt; 1A  0 0.8921168  0  0</span></span>
+<span><span class="co">#&gt; 0B  0 0.0000000  0  0</span></span>
+<span><span class="co">#&gt; 1B  0 0.0000000  0  0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $MLpars[[1]][[3]]</span></span>
+<span><span class="co">#&gt;    0A 1A        0B 1B</span></span>
+<span><span class="co">#&gt; 0A  0  0 0.0000000  0</span></span>
+<span><span class="co">#&gt; 1A  0  0 0.0000000  0</span></span>
+<span><span class="co">#&gt; 0B  0  0 0.8921168  0</span></span>
+<span><span class="co">#&gt; 1B  0  0 0.0000000  0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $MLpars[[1]][[4]]</span></span>
+<span><span class="co">#&gt;    0A 1A 0B        1B</span></span>
+<span><span class="co">#&gt; 0A  0  0  0 0.0000000</span></span>
+<span><span class="co">#&gt; 1A  0  0  0 0.0000000</span></span>
+<span><span class="co">#&gt; 0B  0  0  0 0.0000000</span></span>
+<span><span class="co">#&gt; 1B  0  0  0 0.8921168</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $MLpars[[2]]</span></span>
+<span><span class="co">#&gt;        0A        1A        0B        1B </span></span>
+<span><span class="co">#&gt; 0.1165366 0.1165366 0.1165366 0.1165366 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $MLpars[[3]]</span></span>
+<span><span class="co">#&gt;           0A        1A        0B        1B</span></span>
+<span><span class="co">#&gt; 0A        NA 0.3265844 0.3265844 0.0000000</span></span>
+<span><span class="co">#&gt; 1A 0.1208551        NA 0.0000000 0.3265844</span></span>
+<span><span class="co">#&gt; 0B 0.1208551 0.0000000        NA 0.3265844</span></span>
+<span><span class="co">#&gt; 1B 0.0000000 0.1208551 0.1208551        NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ML</span></span>
+<span><span class="co">#&gt; [1] -224.2669</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $conv</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="va">CR_par_complete</span></span>
+<span><span class="co">#&gt; [1] 0.8921168 0.1165366 0.3265844 0.1208551</span></span>
+<span><span class="va">spec_rates_complete</span> <span class="op">&lt;-</span> <span class="va">CR_par_complete</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">ext_rates_complete</span> <span class="op">&lt;-</span> <span class="va">CR_par_complete</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">Q_01_complete</span> <span class="op">&lt;-</span> <span class="va">CR_par_complete</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
+<span><span class="va">Q_10_complete</span> <span class="op">&lt;-</span> <span class="va">CR_par_complete</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span></span>
 <span><span class="va">spec_rates_complete</span></span>
-<span><span class="co">#&gt; [1] 0.0005389534 0.4006497133</span></span>
+<span><span class="co">#&gt; [1] 0.8921168</span></span>
 <span><span class="va">ext_rates_complete</span></span>
-<span><span class="co">#&gt; [1] 0.11619221 0.07980695</span></span>
-<span><span class="va">Q_Examined_complete</span></span>
-<span><span class="co">#&gt; [1] 72.92250 68.58051</span></span>
-<span><span class="va">Q_Concealed_complete</span></span>
-<span><span class="co">#&gt; [1] 0.2743970 0.6471424</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.1165366</span></span>
+<span><span class="va">Q_01_complete</span></span>
+<span><span class="co">#&gt; [1] 0.3265844</span></span>
+<span><span class="va">Q_10_complete</span></span>
+<span><span class="co">#&gt; [1] 0.1208551</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="comparing-with-reconstructed-trees">Comparing with reconstructed trees<a class="anchor" aria-label="anchor" href="#comparing-with-reconstructed-trees"></a>
 </h2>
 <p>It would be interesting to see how they compare with the same tree
 without any extant species. Let’s follow the standard procedure using a
-similar phylogeny - the same tree we used before, but where all the
+similar phylogeny - the same tree we used before - but where all the
 extinct lineages have been removed. We’ll keep all other model
 specification the same.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">phy_reconstructed</span> <span class="op">&lt;-</span> <span class="va">out</span><span class="op">$</span><span class="va">tes</span></span>
-<span></span>
-<span><span class="co"># Grab the correct traits of the extant lineages</span></span>
-<span><span class="va">extant_traits</span> <span class="op">&lt;-</span> <span class="va">traits</span><span class="op">[</span><span class="va">phy_reconstructed</span><span class="op">$</span><span class="va">tip.label</span>, <span class="op">]</span><span class="op">$</span><span class="va">trait</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">sim_tree_reconstructed</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/secsse_sim.html">secsse_sim</a></span><span class="op">(</span>lambdas <span class="op">=</span> <span class="va">sim_lambda_list</span>,</span>
+<span>                                             mus <span class="op">=</span> <span class="va">sim_mu_vector</span>,</span>
+<span>                                             qs <span class="op">=</span> <span class="va">sim_q_matrix</span>,</span>
+<span>                                             crown_age <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>                                             num_concealed_states <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                                             seed <span class="op">=</span> <span class="fl">40</span>,</span>
+<span>                                             drop_extinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"diversitree"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">for_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>trait <span class="op">=</span> <span class="va">extant_traits</span>,</span>
-<span>                         row.names <span class="op">=</span> <span class="va">phy_reconstructed</span><span class="op">$</span><span class="va">tip.label</span><span class="op">)</span></span>
-<span>  <span class="fu">diversitree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/diversitree/man/trait.plot.html" class="external-link">trait.plot</a></span><span class="op">(</span><span class="va">phy_reconstructed</span>, dat <span class="op">=</span> <span class="va">for_plot</span>,</span>
+<span>  <span class="va">traits_for_plot_reconstructed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    trait <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">sim_tree_reconstructed</span><span class="op">$</span><span class="va">obs_traits</span><span class="op">)</span>,</span>
+<span>    row.names <span class="op">=</span> <span class="va">sim_tree_reconstructed</span><span class="op">$</span><span class="va">phy</span><span class="op">$</span><span class="va">tip.label</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="fu">diversitree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/diversitree/man/trait.plot.html" class="external-link">trait.plot</a></span><span class="op">(</span>tree <span class="op">=</span> <span class="va">sim_tree_reconstructed</span><span class="op">$</span><span class="va">phy</span>,</span>
+<span>                          dat <span class="op">=</span> <span class="va">traits_for_plot_reconstructed</span>,</span>
 <span>                          cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"trait"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                          type <span class="op">=</span> <span class="st">"p"</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_tree_reconstructed</span><span class="op">$</span><span class="va">phy</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><img src="complete_tree_files/figure-html/fitting_ml_reconstructed_tree-1.png" width="700"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">reconstructed_tree_ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/secsse_ml.html">secsse_ml</a></span><span class="op">(</span>phy <span class="op">=</span> <span class="va">phy_reconstructed</span>,</span>
-<span>                                   traits <span class="op">=</span> <span class="va">extant_traits</span>,</span>
+<span><span class="va">reconstructed_tree_ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/secsse_ml.html">secsse_ml</a></span><span class="op">(</span>phy <span class="op">=</span> <span class="va">sim_tree_reconstructed</span><span class="op">$</span><span class="va">phy</span>,</span>
+<span>                                   traits <span class="op">=</span> <span class="va">sim_tree_reconstructed</span><span class="op">$</span><span class="va">obs_traits</span>,</span>
 <span>                                   num_concealed_states <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>                                   idparslist <span class="op">=</span> <span class="va">idparslist</span>,</span>
 <span>                                   idparsopt <span class="op">=</span> <span class="va">idparsopt</span>,</span>
@@ -260,134 +325,150 @@ specification the same.</p>
 <span>                                   is_complete_tree <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in check_ml_conditions(traits, idparslist, initparsopt, idparsopt, :</span></span>
 <span><span class="co">#&gt; Note: you set some transitions as impossible to happen.</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">reconstructed_tree_ml_etd</span> <span class="op">&lt;-</span> <span class="va">reconstructed_tree_ml</span><span class="op">$</span><span class="va">ML</span></span>
-<span><span class="va">ETD_par_reconstructed</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/extract_par_vals.html">extract_par_vals</a></span><span class="op">(</span><span class="va">idparslist</span>, <span class="va">reconstructed_tree_ml</span><span class="op">$</span><span class="va">MLpars</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">reconstructed_tree_ml_CR</span> <span class="op">&lt;-</span> <span class="va">reconstructed_tree_ml</span><span class="op">$</span><span class="va">ML</span></span>
+<span><span class="va">CR_par_reconstructed</span> <span class="op">&lt;-</span> <span class="fu">secsse</span><span class="fu">::</span><span class="fu"><a href="../reference/extract_par_vals.html">extract_par_vals</a></span><span class="op">(</span></span>
+<span>  <span class="va">idparslist</span>,</span>
+<span>  <span class="va">reconstructed_tree_ml</span><span class="op">$</span><span class="va">MLpars</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">reconstructed_tree_ml</span></span>
 <span><span class="co">#&gt; $MLpars</span></span>
 <span><span class="co">#&gt; $MLpars[[1]]</span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[1]]</span></span>
-<span><span class="co">#&gt;              0A 1A 0B 1B</span></span>
-<span><span class="co">#&gt; 0A 2.269519e-05  0  0  0</span></span>
-<span><span class="co">#&gt; 1A 0.000000e+00  0  0  0</span></span>
-<span><span class="co">#&gt; 0B 0.000000e+00  0  0  0</span></span>
-<span><span class="co">#&gt; 1B 0.000000e+00  0  0  0</span></span>
+<span><span class="co">#&gt;          0A 1A 0B 1B</span></span>
+<span><span class="co">#&gt; 0A 0.709443  0  0  0</span></span>
+<span><span class="co">#&gt; 1A 0.000000  0  0  0</span></span>
+<span><span class="co">#&gt; 0B 0.000000  0  0  0</span></span>
+<span><span class="co">#&gt; 1B 0.000000  0  0  0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[2]]</span></span>
-<span><span class="co">#&gt;    0A        1A 0B 1B</span></span>
-<span><span class="co">#&gt; 0A  0 0.0000000  0  0</span></span>
-<span><span class="co">#&gt; 1A  0 0.2017861  0  0</span></span>
-<span><span class="co">#&gt; 0B  0 0.0000000  0  0</span></span>
-<span><span class="co">#&gt; 1B  0 0.0000000  0  0</span></span>
+<span><span class="co">#&gt;    0A       1A 0B 1B</span></span>
+<span><span class="co">#&gt; 0A  0 0.000000  0  0</span></span>
+<span><span class="co">#&gt; 1A  0 0.709443  0  0</span></span>
+<span><span class="co">#&gt; 0B  0 0.000000  0  0</span></span>
+<span><span class="co">#&gt; 1B  0 0.000000  0  0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[3]]</span></span>
-<span><span class="co">#&gt;    0A 1A           0B 1B</span></span>
-<span><span class="co">#&gt; 0A  0  0 0.000000e+00  0</span></span>
-<span><span class="co">#&gt; 1A  0  0 0.000000e+00  0</span></span>
-<span><span class="co">#&gt; 0B  0  0 2.269519e-05  0</span></span>
-<span><span class="co">#&gt; 1B  0  0 0.000000e+00  0</span></span>
+<span><span class="co">#&gt;    0A 1A       0B 1B</span></span>
+<span><span class="co">#&gt; 0A  0  0 0.000000  0</span></span>
+<span><span class="co">#&gt; 1A  0  0 0.000000  0</span></span>
+<span><span class="co">#&gt; 0B  0  0 0.709443  0</span></span>
+<span><span class="co">#&gt; 1B  0  0 0.000000  0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[4]]</span></span>
-<span><span class="co">#&gt;    0A 1A 0B        1B</span></span>
-<span><span class="co">#&gt; 0A  0  0  0 0.0000000</span></span>
-<span><span class="co">#&gt; 1A  0  0  0 0.0000000</span></span>
-<span><span class="co">#&gt; 0B  0  0  0 0.0000000</span></span>
-<span><span class="co">#&gt; 1B  0  0  0 0.2017861</span></span>
+<span><span class="co">#&gt;    0A 1A 0B       1B</span></span>
+<span><span class="co">#&gt; 0A  0  0  0 0.000000</span></span>
+<span><span class="co">#&gt; 1A  0  0  0 0.000000</span></span>
+<span><span class="co">#&gt; 0B  0  0  0 0.000000</span></span>
+<span><span class="co">#&gt; 1B  0  0  0 0.709443</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[2]]</span></span>
 <span><span class="co">#&gt;           0A           1A           0B           1B </span></span>
-<span><span class="co">#&gt; 2.533588e-06 5.065608e-06 2.533588e-06 5.065608e-06 </span></span>
+<span><span class="co">#&gt; 3.139139e-06 3.139139e-06 3.139139e-06 3.139139e-06 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[3]]</span></span>
-<span><span class="co">#&gt;           0A         1A        0B       1B</span></span>
-<span><span class="co">#&gt; 0A        NA 12.1605308 10.114101  0.00000</span></span>
-<span><span class="co">#&gt; 1A 3.9338535         NA  0.000000 10.11410</span></span>
-<span><span class="co">#&gt; 0B 0.1034804  0.0000000        NA 12.16053</span></span>
-<span><span class="co">#&gt; 1B 0.0000000  0.1034804  3.933854       NA</span></span>
+<span><span class="co">#&gt;            0A         1A         0B        1B</span></span>
+<span><span class="co">#&gt; 0A         NA 0.26360052 0.26360052 0.0000000</span></span>
+<span><span class="co">#&gt; 1A 0.03826227         NA 0.00000000 0.2636005</span></span>
+<span><span class="co">#&gt; 0B 0.03826227 0.00000000         NA 0.2636005</span></span>
+<span><span class="co">#&gt; 1B 0.00000000 0.03826227 0.03826227        NA</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ML</span></span>
-<span><span class="co">#&gt; [1] -113.247</span></span>
+<span><span class="co">#&gt; [1] -178.4823</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $conv</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
-<span><span class="va">ETD_par_reconstructed</span></span>
-<span><span class="co">#&gt; [1] 2.269519e-05 2.017861e-01 2.533588e-06 5.065608e-06 1.216053e+01</span></span>
-<span><span class="co">#&gt; [6] 3.933854e+00 1.011410e+01 1.034804e-01</span></span>
-<span><span class="va">spec_rates_reconstructed</span> <span class="op">&lt;-</span> <span class="va">ETD_par_reconstructed</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
-<span><span class="va">ext_rates_reconstructed</span> <span class="op">&lt;-</span> <span class="va">ETD_par_reconstructed</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
-<span><span class="va">Q_Examined_reconstructed</span> <span class="op">&lt;-</span> <span class="va">ETD_par_reconstructed</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span>
-<span><span class="va">Q_Concealed_reconstructed</span> <span class="op">&lt;-</span> <span class="va">ETD_par_reconstructed</span><span class="op">[</span><span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span>
+<span><span class="va">CR_par_reconstructed</span></span>
+<span><span class="co">#&gt; [1] 7.094430e-01 3.139139e-06 2.636005e-01 3.826227e-02</span></span>
+<span><span class="va">spec_rates_reconstructed</span> <span class="op">&lt;-</span> <span class="va">CR_par_reconstructed</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">ext_rates_reconstructed</span> <span class="op">&lt;-</span> <span class="va">CR_par_reconstructed</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">Q_01_reconstructed</span> <span class="op">&lt;-</span> <span class="va">CR_par_reconstructed</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
+<span><span class="va">Q_10_reconstructed</span> <span class="op">&lt;-</span> <span class="va">CR_par_reconstructed</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span></span>
 <span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  Reconstructed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">spec_rates_reconstructed</span>, <span class="va">ext_rates_reconstructed</span>, <span class="va">Q_Examined_reconstructed</span>, <span class="va">Q_Concealed_reconstructed</span><span class="op">)</span>,</span>
-<span>    Complete <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">spec_rates_complete</span>, <span class="va">ext_rates_complete</span>, <span class="va">Q_Examined_complete</span>, <span class="va">Q_Concealed_complete</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Speciation rate 0"</span>, <span class="st">"Speciation rate 1"</span>, <span class="st">"Extinction rate 0"</span>, <span class="st">"Extinction rate 1"</span>, <span class="st">"Transition examined rate 0"</span>, <span class="st">"Transition examined rate 1"</span>, <span class="st">"Transition concealed rate 0"</span>, <span class="st">"Transition concealed rate 1"</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    Reconstructed_tree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="va">spec_rates_reconstructed</span>,</span>
+<span>      <span class="va">ext_rates_reconstructed</span>,</span>
+<span>      <span class="va">Q_01_reconstructed</span>,</span>
+<span>      <span class="va">Q_10_reconstructed</span></span>
+<span>    <span class="op">)</span>,  </span>
+<span>    Complete_tree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="va">spec_rates_complete</span>,</span>
+<span>      <span class="va">ext_rates_complete</span>,</span>
+<span>      <span class="va">Q_01_complete</span>,</span>
+<span>      <span class="va">Q_10_complete</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    Generating_parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="va">speciation_rate</span>,</span>
+<span>      <span class="va">extinction_rate</span>,</span>
+<span>      <span class="va">q_01</span>,</span>
+<span>      <span class="va">q_10</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"Speciation rate"</span>,</span>
+<span>      <span class="st">"Extinction rate"</span>,</span>
+<span>      <span class="st">"Transition rate 01"</span>,</span>
+<span>      <span class="st">"Transition rate 10"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="18%">
+<col width="29%">
+</colgroup>
 <thead><tr class="header">
 <th align="left"></th>
-<th align="right">Reconstructed</th>
-<th align="right">Complete</th>
+<th align="right">Reconstructed_tree</th>
+<th align="right">Complete_tree</th>
+<th align="right">Generating_parameters</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Speciation rate 0</td>
-<td align="right">0.0000227</td>
-<td align="right">0.0005390</td>
+<td align="left">Speciation rate</td>
+<td align="right">0.7094430</td>
+<td align="right">0.8921168</td>
+<td align="right">0.8</td>
 </tr>
 <tr class="even">
-<td align="left">Speciation rate 1</td>
-<td align="right">0.2017861</td>
-<td align="right">0.4006497</td>
+<td align="left">Extinction rate</td>
+<td align="right">0.0000031</td>
+<td align="right">0.1165366</td>
+<td align="right">0.2</td>
 </tr>
 <tr class="odd">
-<td align="left">Extinction rate 0</td>
-<td align="right">0.0000025</td>
-<td align="right">0.1161922</td>
+<td align="left">Transition rate 01</td>
+<td align="right">0.2636005</td>
+<td align="right">0.3265844</td>
+<td align="right">0.1</td>
 </tr>
 <tr class="even">
-<td align="left">Extinction rate 1</td>
-<td align="right">0.0000051</td>
-<td align="right">0.0798069</td>
-</tr>
-<tr class="odd">
-<td align="left">Transition examined rate 0</td>
-<td align="right">12.1605308</td>
-<td align="right">72.9224981</td>
-</tr>
-<tr class="even">
-<td align="left">Transition examined rate 1</td>
-<td align="right">3.9338535</td>
-<td align="right">68.5805119</td>
-</tr>
-<tr class="odd">
-<td align="left">Transition concealed rate 0</td>
-<td align="right">10.1141012</td>
-<td align="right">0.2743970</td>
-</tr>
-<tr class="even">
-<td align="left">Transition concealed rate 1</td>
-<td align="right">0.1034804</td>
-<td align="right">0.6471424</td>
+<td align="left">Transition rate 10</td>
+<td align="right">0.0382623</td>
+<td align="right">0.1208551</td>
+<td align="right">0.1</td>
 </tr>
 </tbody>
 </table>
-<p>We see that including extinct species results in higher estimated
-values of transition rates for the examined states, which are now also
-estimated to be approximately symetrical, in contrast with the
-reconstructed tree. Additionally, the concealed trait transition rates
-are low for both traits when using the complete tree, while the
-reconstructed tree has a higher transition rate for concealed trait 0.
-Finally, and unsurprisingly, some degree of extinction is recovered when
-the complete tree is used.</p>
+<p>We see that including extinct species results in a better esimation
+particularly of the extinction rate. This effect is especially
+noticeable if there are many extinct species present in the tree.
+Additionally, we see that the estimation of the transition rate from
+state 1 to 0 also improved. As a final note, do note that this is just a
+simple simulation example and care should be exercised with model
+selection and specification when fitting secsse to empirical datasets to
+make predictions about evolutionary patterns.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <p>Nee S, May RM, Harvey PH. The reconstructed evolutionary process.
-Philos Trans R Soc Lond B Biol Sci. 1994 May 28;344(1309):305-11. doi:
-10.1098/rstb.1994.0068.</p>
+Philos Trans R Soc Lond B Biol Sci. 1994 May 28;344(1309):305-11. <a href="https://doi.org/10.1098/rstb.1994.0068" class="external-link uri">https://doi.org/10.1098/rstb.1994.0068</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
