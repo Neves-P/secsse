@@ -4,10 +4,9 @@ pkgdown_sha: ~
 articles:
   complete_tree: complete_tree.html
   plotting_states: plotting_states.html
-  secsse_versions: secsse_versions.html
   sim_with_secsse: sim_with_secsse.html
   starting_secsse: starting_secsse.html
-last_built: 2023-07-24T10:12Z
+last_built: 2023-07-24T12:34Z
 urls:
   reference: https://neves-p.github.io/secsse/reference
   article: https://neves-p.github.io/secsse/articles
