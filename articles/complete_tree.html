@@ -77,7 +77,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Using secsse with complete phylogenies (with extinction)</h1>
             
-            <h4 data-toc-skip class="date">2023-07-18</h4>
+            <h4 data-toc-skip class="date">2023-07-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rsetienne/secsse/blob/HEAD/vignettes/complete_tree.Rmd" class="external-link"><code>vignettes/complete_tree.Rmd</code></a></small>
       <div class="d-none name"><code>complete_tree.Rmd</code></div>
@@ -218,65 +218,65 @@ enables secsse to use the information present in extinct lineages.</p>
 <span><span class="co">#&gt; $MLpars</span></span>
 <span><span class="co">#&gt; $MLpars[[1]]</span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[1]]</span></span>
-<span><span class="co">#&gt;           0A 1A 0B 1B</span></span>
-<span><span class="co">#&gt; 0A 0.8921168  0  0  0</span></span>
-<span><span class="co">#&gt; 1A 0.0000000  0  0  0</span></span>
-<span><span class="co">#&gt; 0B 0.0000000  0  0  0</span></span>
-<span><span class="co">#&gt; 1B 0.0000000  0  0  0</span></span>
+<span><span class="co">#&gt;          0A 1A 0B 1B</span></span>
+<span><span class="co">#&gt; 0A 1.137806  0  0  0</span></span>
+<span><span class="co">#&gt; 1A 0.000000  0  0  0</span></span>
+<span><span class="co">#&gt; 0B 0.000000  0  0  0</span></span>
+<span><span class="co">#&gt; 1B 0.000000  0  0  0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[2]]</span></span>
-<span><span class="co">#&gt;    0A        1A 0B 1B</span></span>
-<span><span class="co">#&gt; 0A  0 0.0000000  0  0</span></span>
-<span><span class="co">#&gt; 1A  0 0.8921168  0  0</span></span>
-<span><span class="co">#&gt; 0B  0 0.0000000  0  0</span></span>
-<span><span class="co">#&gt; 1B  0 0.0000000  0  0</span></span>
+<span><span class="co">#&gt;    0A       1A 0B 1B</span></span>
+<span><span class="co">#&gt; 0A  0 0.000000  0  0</span></span>
+<span><span class="co">#&gt; 1A  0 1.137806  0  0</span></span>
+<span><span class="co">#&gt; 0B  0 0.000000  0  0</span></span>
+<span><span class="co">#&gt; 1B  0 0.000000  0  0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[3]]</span></span>
-<span><span class="co">#&gt;    0A 1A        0B 1B</span></span>
-<span><span class="co">#&gt; 0A  0  0 0.0000000  0</span></span>
-<span><span class="co">#&gt; 1A  0  0 0.0000000  0</span></span>
-<span><span class="co">#&gt; 0B  0  0 0.8921168  0</span></span>
-<span><span class="co">#&gt; 1B  0  0 0.0000000  0</span></span>
+<span><span class="co">#&gt;    0A 1A       0B 1B</span></span>
+<span><span class="co">#&gt; 0A  0  0 0.000000  0</span></span>
+<span><span class="co">#&gt; 1A  0  0 0.000000  0</span></span>
+<span><span class="co">#&gt; 0B  0  0 1.137806  0</span></span>
+<span><span class="co">#&gt; 1B  0  0 0.000000  0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[4]]</span></span>
-<span><span class="co">#&gt;    0A 1A 0B        1B</span></span>
-<span><span class="co">#&gt; 0A  0  0  0 0.0000000</span></span>
-<span><span class="co">#&gt; 1A  0  0  0 0.0000000</span></span>
-<span><span class="co">#&gt; 0B  0  0  0 0.0000000</span></span>
-<span><span class="co">#&gt; 1B  0  0  0 0.8921168</span></span>
+<span><span class="co">#&gt;    0A 1A 0B       1B</span></span>
+<span><span class="co">#&gt; 0A  0  0  0 0.000000</span></span>
+<span><span class="co">#&gt; 1A  0  0  0 0.000000</span></span>
+<span><span class="co">#&gt; 0B  0  0  0 0.000000</span></span>
+<span><span class="co">#&gt; 1B  0  0  0 1.137806</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[2]]</span></span>
 <span><span class="co">#&gt;        0A        1A        0B        1B </span></span>
-<span><span class="co">#&gt; 0.1165366 0.1165366 0.1165366 0.1165366 </span></span>
+<span><span class="co">#&gt; 0.5144811 0.5144811 0.5144811 0.5144811 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[3]]</span></span>
-<span><span class="co">#&gt;           0A        1A        0B        1B</span></span>
-<span><span class="co">#&gt; 0A        NA 0.3265844 0.3265844 0.0000000</span></span>
-<span><span class="co">#&gt; 1A 0.1208551        NA 0.0000000 0.3265844</span></span>
-<span><span class="co">#&gt; 0B 0.1208551 0.0000000        NA 0.3265844</span></span>
-<span><span class="co">#&gt; 1B 0.0000000 0.1208551 0.1208551        NA</span></span>
+<span><span class="co">#&gt;           0A        1A        0B      1B</span></span>
+<span><span class="co">#&gt; 0A        NA 0.0513700 0.0513700 0.00000</span></span>
+<span><span class="co">#&gt; 1A 0.4450213        NA 0.0000000 0.05137</span></span>
+<span><span class="co">#&gt; 0B 0.4450213 0.0000000        NA 0.05137</span></span>
+<span><span class="co">#&gt; 1B 0.0000000 0.4450213 0.4450213      NA</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ML</span></span>
-<span><span class="co">#&gt; [1] -224.2669</span></span>
+<span><span class="co">#&gt; [1] -107.6028</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $conv</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="va">CR_par_complete</span></span>
-<span><span class="co">#&gt; [1] 0.8921168 0.1165366 0.3265844 0.1208551</span></span>
+<span><span class="co">#&gt; [1] 1.1378059 0.5144811 0.0513700 0.4450213</span></span>
 <span><span class="va">spec_rates_complete</span> <span class="op">&lt;-</span> <span class="va">CR_par_complete</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">ext_rates_complete</span> <span class="op">&lt;-</span> <span class="va">CR_par_complete</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
 <span><span class="va">Q_01_complete</span> <span class="op">&lt;-</span> <span class="va">CR_par_complete</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
 <span><span class="va">Q_10_complete</span> <span class="op">&lt;-</span> <span class="va">CR_par_complete</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span></span>
 <span><span class="va">spec_rates_complete</span></span>
-<span><span class="co">#&gt; [1] 0.8921168</span></span>
+<span><span class="co">#&gt; [1] 1.137806</span></span>
 <span><span class="va">ext_rates_complete</span></span>
-<span><span class="co">#&gt; [1] 0.1165366</span></span>
+<span><span class="co">#&gt; [1] 0.5144811</span></span>
 <span><span class="va">Q_01_complete</span></span>
-<span><span class="co">#&gt; [1] 0.3265844</span></span>
+<span><span class="co">#&gt; [1] 0.05137</span></span>
 <span><span class="va">Q_10_complete</span></span>
-<span><span class="co">#&gt; [1] 0.1208551</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.4450213</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="comparing-with-reconstructed-trees">Comparing with reconstructed trees<a class="anchor" aria-label="anchor" href="#comparing-with-reconstructed-trees"></a>
@@ -335,53 +335,53 @@ specification the same.</p>
 <span><span class="co">#&gt; $MLpars</span></span>
 <span><span class="co">#&gt; $MLpars[[1]]</span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[1]]</span></span>
-<span><span class="co">#&gt;          0A 1A 0B 1B</span></span>
-<span><span class="co">#&gt; 0A 0.709443  0  0  0</span></span>
-<span><span class="co">#&gt; 1A 0.000000  0  0  0</span></span>
-<span><span class="co">#&gt; 0B 0.000000  0  0  0</span></span>
-<span><span class="co">#&gt; 1B 0.000000  0  0  0</span></span>
+<span><span class="co">#&gt;           0A 1A 0B 1B</span></span>
+<span><span class="co">#&gt; 0A 0.7511428  0  0  0</span></span>
+<span><span class="co">#&gt; 1A 0.0000000  0  0  0</span></span>
+<span><span class="co">#&gt; 0B 0.0000000  0  0  0</span></span>
+<span><span class="co">#&gt; 1B 0.0000000  0  0  0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[2]]</span></span>
-<span><span class="co">#&gt;    0A       1A 0B 1B</span></span>
-<span><span class="co">#&gt; 0A  0 0.000000  0  0</span></span>
-<span><span class="co">#&gt; 1A  0 0.709443  0  0</span></span>
-<span><span class="co">#&gt; 0B  0 0.000000  0  0</span></span>
-<span><span class="co">#&gt; 1B  0 0.000000  0  0</span></span>
+<span><span class="co">#&gt;    0A        1A 0B 1B</span></span>
+<span><span class="co">#&gt; 0A  0 0.0000000  0  0</span></span>
+<span><span class="co">#&gt; 1A  0 0.7511428  0  0</span></span>
+<span><span class="co">#&gt; 0B  0 0.0000000  0  0</span></span>
+<span><span class="co">#&gt; 1B  0 0.0000000  0  0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[3]]</span></span>
-<span><span class="co">#&gt;    0A 1A       0B 1B</span></span>
-<span><span class="co">#&gt; 0A  0  0 0.000000  0</span></span>
-<span><span class="co">#&gt; 1A  0  0 0.000000  0</span></span>
-<span><span class="co">#&gt; 0B  0  0 0.709443  0</span></span>
-<span><span class="co">#&gt; 1B  0  0 0.000000  0</span></span>
+<span><span class="co">#&gt;    0A 1A        0B 1B</span></span>
+<span><span class="co">#&gt; 0A  0  0 0.0000000  0</span></span>
+<span><span class="co">#&gt; 1A  0  0 0.0000000  0</span></span>
+<span><span class="co">#&gt; 0B  0  0 0.7511428  0</span></span>
+<span><span class="co">#&gt; 1B  0  0 0.0000000  0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[1]][[4]]</span></span>
-<span><span class="co">#&gt;    0A 1A 0B       1B</span></span>
-<span><span class="co">#&gt; 0A  0  0  0 0.000000</span></span>
-<span><span class="co">#&gt; 1A  0  0  0 0.000000</span></span>
-<span><span class="co">#&gt; 0B  0  0  0 0.000000</span></span>
-<span><span class="co">#&gt; 1B  0  0  0 0.709443</span></span>
+<span><span class="co">#&gt;    0A 1A 0B        1B</span></span>
+<span><span class="co">#&gt; 0A  0  0  0 0.0000000</span></span>
+<span><span class="co">#&gt; 1A  0  0  0 0.0000000</span></span>
+<span><span class="co">#&gt; 0B  0  0  0 0.0000000</span></span>
+<span><span class="co">#&gt; 1B  0  0  0 0.7511428</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[2]]</span></span>
-<span><span class="co">#&gt;           0A           1A           0B           1B </span></span>
-<span><span class="co">#&gt; 3.139139e-06 3.139139e-06 3.139139e-06 3.139139e-06 </span></span>
+<span><span class="co">#&gt;         0A         1A         0B         1B </span></span>
+<span><span class="co">#&gt; 0.09345162 0.09345162 0.09345162 0.09345162 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MLpars[[3]]</span></span>
-<span><span class="co">#&gt;            0A         1A         0B        1B</span></span>
-<span><span class="co">#&gt; 0A         NA 0.26360052 0.26360052 0.0000000</span></span>
-<span><span class="co">#&gt; 1A 0.03826227         NA 0.00000000 0.2636005</span></span>
-<span><span class="co">#&gt; 0B 0.03826227 0.00000000         NA 0.2636005</span></span>
-<span><span class="co">#&gt; 1B 0.00000000 0.03826227 0.03826227        NA</span></span>
+<span><span class="co">#&gt;           0A         1A         0B         1B</span></span>
+<span><span class="co">#&gt; 0A        NA 0.06550862 0.06550862 0.00000000</span></span>
+<span><span class="co">#&gt; 1A 0.6898351         NA 0.00000000 0.06550862</span></span>
+<span><span class="co">#&gt; 0B 0.6898351 0.00000000         NA 0.06550862</span></span>
+<span><span class="co">#&gt; 1B 0.0000000 0.68983511 0.68983511         NA</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ML</span></span>
-<span><span class="co">#&gt; [1] -178.4823</span></span>
+<span><span class="co">#&gt; [1] -97.04495</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $conv</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="va">CR_par_reconstructed</span></span>
-<span><span class="co">#&gt; [1] 7.094430e-01 3.139139e-06 2.636005e-01 3.826227e-02</span></span>
+<span><span class="co">#&gt; [1] 0.75114285 0.09345162 0.06550862 0.68983511</span></span>
 <span><span class="va">spec_rates_reconstructed</span> <span class="op">&lt;-</span> <span class="va">CR_par_reconstructed</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">ext_rates_reconstructed</span> <span class="op">&lt;-</span> <span class="va">CR_par_reconstructed</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
 <span><span class="va">Q_01_reconstructed</span> <span class="op">&lt;-</span> <span class="va">CR_par_reconstructed</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
@@ -431,26 +431,26 @@ specification the same.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Speciation rate</td>
-<td align="right">0.7094430</td>
-<td align="right">0.8921168</td>
+<td align="right">0.7511428</td>
+<td align="right">1.1378059</td>
 <td align="right">0.8</td>
 </tr>
 <tr class="even">
 <td align="left">Extinction rate</td>
-<td align="right">0.0000031</td>
-<td align="right">0.1165366</td>
+<td align="right">0.0934516</td>
+<td align="right">0.5144811</td>
 <td align="right">0.2</td>
 </tr>
 <tr class="odd">
 <td align="left">Transition rate 01</td>
-<td align="right">0.2636005</td>
-<td align="right">0.3265844</td>
+<td align="right">0.0655086</td>
+<td align="right">0.0513700</td>
 <td align="right">0.1</td>
 </tr>
 <tr class="even">
 <td align="left">Transition rate 10</td>
-<td align="right">0.0382623</td>
-<td align="right">0.1208551</td>
+<td align="right">0.6898351</td>
+<td align="right">0.4450213</td>
 <td align="right">0.1</td>
 </tr>
 </tbody>
@@ -459,10 +459,11 @@ specification the same.</p>
 particularly of the extinction rate. This effect is especially
 noticeable if there are many extinct species present in the tree.
 Additionally, we see that the estimation of the transition rate from
-state 1 to 0 also improved. As a final note, do note that this is just a
-simple simulation example and care should be exercised with model
-selection and specification when fitting secsse to empirical datasets to
-make predictions about evolutionary patterns.</p>
+state 1 to 0 also improved.</p>
+<p>As a final note, do note that this is just a simple simulation
+example and care should be exercised with model selection and
+specification when fitting secsse to empirical datasets to make
+predictions about evolutionary patterns.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

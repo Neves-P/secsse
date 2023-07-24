@@ -284,17 +284,12 @@ on non-extinction and this crown age.</p></dd>
 different from all available states, otherwise leave at NULL</p></dd>
 
 
-<dt>maxSpec</dt>
-<dd><p>Maximum number of species in the tree (please note that the
-tree is not conditioned on this number, but that this is a safeguard
-against generating extremely large trees).</p></dd>
-
-
 <dt>conditioning</dt>
 <dd><p>can be <code>"obs_states"</code>, <code>"true_states"</code> or <code>"none"</code>, the
 tree is simulated until one is generated that contains all observed states
 (<code>"obs_states"</code>), all true states (e.g. all combinations of obs and hidden
-states), or is always returned (<code>"none"</code>).</p></dd>
+states), or is always returned (<code>"none"</code>). Alternatively, a vector with
+the names of required observed states can be provided, e.g. c("S", "N").</p></dd>
 
 
 <dt>non_extinction</dt>
@@ -439,6 +434,16 @@ optimized.</p></dd>
 
 <dt>mu_vector</dt>
 <dd><p>previously defined mus - used to choose indicator number.</p></dd>
+
+
+<dt>max_spec</dt>
+<dd><p>Maximum number of species in the tree (please note that the
+tree is not conditioned on this number, but that this is a safeguard
+against generating extremely large trees).</p></dd>
+
+
+<dt>min_spec</dt>
+<dd><p>Minimum number of species in the tree.</p></dd>
 
 
 <dt>optimmethod</dt>
