@@ -11,4 +11,4 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^vignettes/_secsse_versions\.Rmd$
+^vignettes/secsse_versions\.Rmd$
