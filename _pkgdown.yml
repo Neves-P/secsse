@@ -2,8 +2,8 @@ url: https://neves-p.github.io/secsse/
 template:
   bootstrap: 5
 resource_files:
-  - pics/Codecov.png
-  - pics/github_actions_logo.png
+  - man/figures/Codecov.png
+  - man/figures/github_actions_logo.png
 
 articles:
 - title: Articles
