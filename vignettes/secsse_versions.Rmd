@@ -9,6 +9,7 @@ output: rmarkdown::html_vignette
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.width = 7)
 knitr::opts_chunk$set(fig.height = 5)
+options(rmarkdown.html_vignette.check_title = FALSE)
 library(secsse)
 library(ggplot2)
 ```
